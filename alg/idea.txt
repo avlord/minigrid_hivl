@@ -1,0 +1,62 @@
+U = Actions + Skills + Terminate
+
+Model(S) -> U
+
+if U == Action:
+    loss = update_BCE(Model)
+
+if U == Skill:
+    stack.push(Model)
+    sub_model = Model(S)
+    loss = update_BCE(sub_model)
+    loss_2 = update_stack(->>)
+
+if U == Terminate:
+    stack.pop()
+    return
+
+1. When do we update models?
+2. How do we work with stack?
+....
+
+Controller:
+    stack: Stack
+    get_top: id
+    update: callable
+    act: callable
+        model_id = get_top() ###Start with Root
+        
+        if model_id is None:
+            return
+        
+        model = get_model(model_id)
+
+        pred = model(s) ### Door or Move
+        
+        if pred is action:
+            new_action = pred
+            loss == model.get_loss() ### update model maybe
+            
+            rewards.push(loss)
+
+            s = get_new_state()
+            
+            Controller.act(s)
+
+        
+        elif pred is skill:
+            ###For example Door###
+            stack.push(Model_id)
+            Controller.act(s)
+
+
+        elif pred is Terminate:
+            if rewards is not None:
+                UPDATE_PG_STACK()
+
+            stack.pop()
+            return
+        
+        
+
+        
